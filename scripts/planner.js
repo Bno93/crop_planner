@@ -39,9 +39,9 @@ function planner_controller($scope){
 	// Core data & objects
 	self.config = {};
 	self.loaded = false;
-	self.sidebar;
-	self.player;
-	self.planner_modal;
+	self.sidebar = null;
+	self.player = null;
+	self.planner_modal = null;
 	
 	// Static planner data
 	self.days = new Array(YEAR_DAYS);	// Array of days in a year (only used by one ng-repeat)
@@ -55,13 +55,13 @@ function planner_controller($scope){
 	// State objects & variables
 	self.years = [];
 	
-	self.cdate;							// Current date to add plan to
-	self.cseason;						// Current season
+	self.cdate = "";							// Current date to add plan to
+	self.cseason = "";						// Current season
 	self.cmode = "farm";				// Current farm mode (farm / greenhouse)
-	self.cyear;							// Current year
+	self.cyear = "";							// Current year
 	
-	self.newplan;
-	self.editplan;
+	self.newplan = "";
+	self.editplan = "";
 	
 	// Core planner functions
 	self.update = update;
@@ -105,8 +105,8 @@ function planner_controller($scope){
 	********************************/
 	function init(){
 		// Initialize planner variables
-		self.sidebar = new Sidebar;
-		self.player = new Player;
+		self.sidebar = new Sidebar();
+		self.player = new Player();
 		self.planner_modal  = $("#crop_planner");
 		
 		for (var i = 0; i < self.days.length; i++) self.days[i] = i + 1;
@@ -181,7 +181,7 @@ function planner_controller($scope){
 				});
 				
 				// Create newplan template
-				self.newplan = new Plan;
+				self.newplan = new Plan();
 				
 				// Load saved plans from browser storage
 				var plan_count = load_data();
@@ -298,8 +298,8 @@ function planner_controller($scope){
 		// Reset financial totals
 		farm.totals = {};
 		farm.totals.day = {};
-		farm.totals.season = [new Finance, new Finance, new Finance, new Finance];
-		farm.totals.year = new Finance;
+		farm.totals.season = [new Finance(), new Finance(), new Finance(), new Finance()];
+		farm.totals.year = new Finance();
 		
 		// Rebuild data
 		$.each(farm.plans, function(date, plans){
@@ -317,7 +317,7 @@ function planner_controller($scope){
 				}
 				
 				// Update daily costs for planting
-				if (!farm.totals.day[date]) farm.totals.day[date] = new Finance;
+				if (!farm.totals.day[date]) farm.totals.day[date] = new Finance();
 				var d_plant = farm.totals.day[date];
 				d_plant.profit.min -= planting_cost;
 				d_plant.profit.max -= planting_cost;
@@ -341,8 +341,8 @@ function planner_controller($scope){
 				// Regrowth harvests
 				if (crop.regrow){
 					var regrowths = Math.floor((crop_end - first_harvest) / crop.regrow);
-					for (var i = 1; i <= regrowths; i++){
-						var regrow_date = first_harvest + (i * crop.regrow);
+					for (var j = 1; j <= regrowths; j++){
+						var regrow_date = first_harvest + (j * crop.regrow);
 						if (regrow_date > crop_end) break;
 						harvests.push(new Harvest(plan, regrow_date, true));
 					}
@@ -352,15 +352,15 @@ function planner_controller($scope){
 				plan.harvests = harvests;
 				
 				// Add up all harvests
-				for (var i = 0; i < harvests.length; i++){
-					var harvest = harvests[i];
+				for (var k = 0; k < harvests.length; k++){
+					var harvest = harvests[k];
 					
 					// Update harvests
 					if (!farm.harvests[harvest.date]) farm.harvests[harvest.date] = [];
 					farm.harvests[harvest.date].push(harvest);
 					
 					// Update daily revenues from harvests
-					if (!farm.totals.day[harvest.date]) farm.totals.day[harvest.date] = new Finance;
+					if (!farm.totals.day[harvest.date]) farm.totals.day[harvest.date] = new Finance();
 					var d_harvest = farm.totals.day[harvest.date];
 					d_harvest.profit.min += harvest.revenue.min;
 					d_harvest.profit.max += harvest.revenue.max;
@@ -382,8 +382,8 @@ function planner_controller($scope){
 		for (var i = 0; i < farm.totals.seasons; i++){
 			var season = farm.totals.seasons[i];
 			var y_total = farm.totals.year;
-			y_total.profit.min += season.profit.min
-			y_total.profit.max += season.profit.max
+			y_total.profit.min += season.profit.min;
+			y_total.profit.max += season.profit.max;
 		}
 		
 		// Update next year
@@ -398,7 +398,7 @@ function planner_controller($scope){
 	function add_plan(date, auto_replant){
 		if (!validate_plan_amount()) return;
 		self.cyear.add_plan(self.newplan, date, auto_replant);
-		self.newplan = new Plan;
+		self.newplan = new Plan();
 	}
 	
 	// Add plan to plans list on enter keypress
@@ -422,7 +422,7 @@ function planner_controller($scope){
 		
 		// Check if input is in gold
 		if (amount.toLowerCase().endsWith("g")){
-			var match = amount.match(/^([0-9]+)g$/i)
+			var match = amount.match(/^([0-9]+)g$/i);
 			if (!match) return;
 			
 			var gold = parseInt(match[1] || 0);
@@ -659,7 +659,7 @@ function planner_controller($scope){
 				// ESC
 				back();
 			} else {
-				event_handled = false
+				event_handled = false;
 			}
 			
 			if (event_handled){
@@ -746,20 +746,20 @@ function planner_controller($scope){
 			if (!file) return;
 			
 			// Read data from JSON file
-			var reader = new FileReader;
+			var reader = new FileReader();
 			reader.onload = function(e){
 				var data = {};
 				
 				try {
 					data = JSON.parse(e.target.result);
 				} catch(e){
-					alert("Not valid JSON data to import.")
+					alert("Not valid JSON data to import.");
 					return;
 				}
 				
 				//if (!data.plans || !data.player){
 				if (!data.plans){
-					alert("Invalid data to import.")
+					alert("Invalid data to import.");
 					return;
 				}
 				
@@ -835,7 +835,7 @@ function planner_controller($scope){
 		self.tiller = false;
 		self.agriculturist = false;
 		
-		self.load = load
+		self.load = load;
 		self.save = save;
 		self.toggle_perk = toggle_perk;
 		self.quality_chance = quality_chance;
@@ -921,8 +921,8 @@ function planner_controller($scope){
 	function Season(ind){
 		var self = this;
 		self.index = ind;
-		self.id;
-		self.name;
+		self.id = "";
+		self.name = "";
 		self.start = 0;
 		self.end = 0;
 		
@@ -951,13 +951,13 @@ function planner_controller($scope){
 		var self = this;
 		
 		// Config properties
-		self.id;
-		self.name;
-		self.sell;
-		self.buy;
+		self.id = "";
+		self.name = "";
+		self.sell = 0;
+		self.buy = 0;
 		self.seasons = [];
 		self.stages = [];
-		self.regrow;
+		self.regrow = 0;
 		self.wild = false;
 		
 		// Harvest data
@@ -1022,8 +1022,8 @@ function planner_controller($scope){
 			
 			// Calculate fixed budget profit
 			var budget = 1000; // 1000g worth of seeds
-			var plantings = Math.floor(budget / self.buy);
-			var growth_days = self.grow + (regrowths * (self.regrow ? self.regrow : 0));
+			plantings = Math.floor(budget / self.buy);
+			growth_days = self.grow + (regrowths * (self.regrow ? self.regrow : 0));
 			
 			self.fixed_profit -= self.buy * plantings;
 			self.fixed_profit += self.harvest.min * self.get_sell() * (plantings + regrowths);
@@ -1232,7 +1232,7 @@ function planner_controller($scope){
 	****************/
 	function Farm(parent_year, is_greenhouse){
 		var self = this;
-		self.year;
+		self.year = "";
 		self.greenhouse = false;
 		self.plans = {};
 		self.harvests = {};
@@ -1249,7 +1249,7 @@ function planner_controller($scope){
 			for (var i = 0; i < YEAR_DAYS; i++){
 				self.plans[i+1] = [];
 			}
-			self.totals.season = [new Finance, new Finance, new Finance, new Finance];
+			self.totals.season = [new Finance(), new Finance(), new Finance(), new Finance()];
 		}
 	}
 	
@@ -1383,8 +1383,8 @@ function planner_controller($scope){
 	****************/
 	function Plan(data, in_greenhouse){
 		var self = this;
-		self.date;
-		self.crop_id;
+		self.date = "";
+		self.crop_id = "";
 		self.crop = {};
 		self.amount = 1;
 		self.fertilizer = planner.fertilizer["none"];
@@ -1457,8 +1457,8 @@ function planner_controller($scope){
 		
 		// Add up days of growth
 		var days = 0;
-		for (var i = 0; i < stages.length; i++){
-			days += stages[i];
+		for (var j = 0; j < stages.length; j++){
+			days += stages[j];
 		}
 		
 		return days;
@@ -1491,8 +1491,8 @@ function planner_controller($scope){
 	****************/
 	function Fertilizer(data){
 		var self = this;
-		self.id;
-		self.name;
+		self.id = "";
+		self.name = "";
 		self.buy = 0;
 		self.quality = [0, 0, 0]; // for quality-modifying fertilizers
 		self.growth_rate = 0; // for growth-modifying fertilizers
@@ -1574,10 +1574,10 @@ function planner_controller($scope){
 	****************/
 	function CalendarEvent(data){
 		var self = this;
-		self.day;
-		self.season;
+		self.day = null;
+		self.season = null;
 		
-		self.date;
+		self.date = null;
 		self.name = "";
 		self.festival = false;
 		
