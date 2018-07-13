@@ -1,3 +1,7 @@
 utils/data/*
 *.pyo
 *.pyc
+
+node_modules
+
+package-lock.json

@@ -1,0 +1,32 @@
+{
+  "name": "crop_planner",
+  "version": "0.0.1",
+  "description": "A tool for planning crop schedules in the Stardew Valley game.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bno93/crop_planner.git"
+  },
+  "author": "Benno Schweikert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Bno93/crop_planner/issues"
+  },
+  "homepage": "https://github.com/Bno93/crop_planner#readme",
+  "devDependencies": {
+    "electron": "^2.0.2"
+  },
+  "dependencies": {
+    "angular": "^1.5.5",
+    "bootstrap": "^3.3.6",
+    "connect": "^3.6.6",
+    "font-awesome": "^4.7.0",
+    "jquery": "^2.2.0",
+    "jquery-ui": "^1.12.1",
+    "serve-static": "^1.13.2"
+  }
+}
