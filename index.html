@@ -408,8 +408,8 @@
               </div>
               <div class="col-md-3 col-xs-4">
                 <b></b><br>
-                <div class="btn btn-default" ng-click="self.add_plan(self.cdate)"><i class="fa fa-plus"></i> Plant</div>
-                <div class="btn btn-default" ng-click="self.add_plan(self.cdate, true)" data-toggle="tooltip" data-placement="bottom" title="Auto-replant on day of harvest"><i class="fa fa-calendar"></i> Autoplant</div>
+                <div class="btn btn-default" ng-disabled="!(self.newplan.crop_id)" ng-click="self.add_plan(self.cdate)"><i class="fa fa-plus"></i> Plant</div>
+                <div class="btn btn-default" ng-disabled="!(self.newplan.crop_id)" ng-click="self.add_plan(self.cdate, true)" data-toggle="tooltip" data-placement="bottom" title="Auto-replant on day of harvest"><i class="fa fa-calendar"></i> Autoplant</div>
               </div>
             </div>
             <br>
@@ -444,7 +444,7 @@
                       </td>
                       <td>
                         <span ng-show="self.editplan!=plan">x{{plan.amount}}</span>
-                        <span ng-show="self.editplan==plan">x<input style="padding-left:2px;width:100px" class="form-control" type="number" min="1" ng-model="plan.amount"></span>
+                        <span ng-show="self.editplan==plan"><input style="padding-left:2px;width:100px" class="form-control" type="number" min="1" ng-model="plan.amount"></span>
                       </td>
                       <td>
                         <div ng-show="plan.fertilizer.id!='none' && self.editplan!=plan">

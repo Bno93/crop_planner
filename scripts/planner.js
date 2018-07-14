@@ -249,16 +249,19 @@ function planner_controller($scope) {
     if (e.which == 39) {
       // Right arrow
       self.inc_season(1);
-    } else if (e.which == 37) {
+    } 
+    else if (e.which == 37) {
       // Left arrow
       self.inc_season(-1);
-    } else if (e.which == 27) {
-      // ESC
-      self.sidebar.open("cropinfo");
-    } else if (e.which == 192) {
+    // } else if (e.which == 27) {
+    //   // ESC
+    //   self.sidebar.open("cropinfo");
+    } 
+    else if (e.which == 192) {
       // Tilde
       self.toggle_mode();
-    } else {
+    } 
+    else {
       event_handled = false;
     }
 
