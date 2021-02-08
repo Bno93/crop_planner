@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/Bno93/crop_planner#readme",
   "devDependencies": {
-    "electron": "^2.0.2"
+    "electron": "^2.0.18",
+    "electron-packager": "^15.2.0"
   },
   "dependencies": {
     "angular": "^1.5.5",

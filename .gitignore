@@ -5,3 +5,5 @@ utils/data/*
 node_modules
 
 package-lock.json
+
+crop_planner-linux-x64
